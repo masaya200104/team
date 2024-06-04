@@ -1,47 +1,90 @@
 <?php session_start(); ?>
-<?php require 'header.php'; ?>
-
-
-<script>
-    const btn2 = document.getElementById('btn2');
-    const btn2Text = document.getElementById('btn2-text');
-
-    btn2.addEventListener('click', () => {
-    // ボタンクリックでhiddenクラスを付け外しする
-    btn2Text.classList.toggle('hidden');
-    });
-</script>
+<!DOCTYPE html>
+<html>
+<head>
 <style type="text/css">
-.btn-container {
+body {
+  background-size: cover;
+}
+
+h1 {
+  color: #666;
+}
+
+main {
+  display: block;
+  width: 960px;
+  height: 540px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+  box-sizing: border-box;
+  border: 1px solid #666;
+  box-shadow: 5px 5px 5px rgb(0 0 0 / 30%);
+  padding: 20px;
   text-align: center;
 }
 
-button {
-  width: 80%;
-  height: 50px;
-  font-size: 18px;
-  font-weight: bold;
-
-  /* ボタンにカーソルを当てると、カーソルがポインターに変わる */
-  cursor: pointer;
+.section-container {
+  display: flex;
+  width: 100%;
 }
 
-/* ボタンにカーソルを当てたとき、ボタンを半透明にする */
-button:hover {
- opacity: 0.7;
+section {
+  width: calc(100% / 3);
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: o;
+  box-sizing: border-box;
 }
 
-/* クリックで表示させるテキストを隠す */
-.hidden {
+.button {
+  width: 100%;
+  text-transform: none;
+  height: 40px;
+  line-height: 40px;
+  font-size: 20px;
+  background-color: #54cb8e;
+  border: none;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.button:active {
+  background-color: #54cb8e;
+}
+
+.button + .box {
   display: none;
+  font-size: 20px;
+  margin-top: 10px;
+  border: 1px solid white;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+  padding: 10px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3) inset;
+  text-align: left;
+  color: white;
 }
 
-#btn2-text{
-  margin: 16px 0;
-  font-size: 14px;
-  color: red;
+.button + .box.show {
+  display: block;
 }
-</style> 
+</style>
+<script>
+document.querySelectorAll(".button").forEach((button) => {
+  // .button要素をクリックしたときに発火
+  button.addEventListener("click", () => {
+    // .button要素の次の要素のクラス(.show)で切り替える
+    button.nextElementSibling.classList.toggle("show");
+  });
+});
+</script>
+<meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0">
+<title>チャットアプリ開発</title>
+</head>
+<body>
 <?php require 'db_conect.php';?>
 <?php
      $pdo=new PDO($connect,USER,PASS);
@@ -76,34 +119,38 @@ button:hover {
          ]);
          
          echo '<div align="center"><h1>マイページ</h1></div>'; 
+         
          foreach($sql as $row){
          
          echo'<div align="center"><h2>ユーザープロフィール</h2><br></div>';
-         echo '<div class="btn-container"><button id="btn2">ボタン２</button>';
-         echo '<p id="btn2-text" class="hidden">';
          echo'<form action="mypage.php" method="post" class="hidden">';
-         echo'ユーザー名　　';
-         echo'<input type="text" align="center" name="name" class="hidden" value="',$row['name'],'">';
-         echo'<br>';
+
          
-         echo'メールアドレス';
-         echo'<input type="text" name="address" class="hidden" value="',$row['client_address'],'">';
-         echo'<br>';
+         echo  '<div class="section-container">';
          
-         echo'パスワード　　';
-         echo'<input type="text" name="password" class="hidden">';
-         echo'<br>';
+         echo '<section><button class="button" type="button" >クリックして開く</button><div class="box">';
+         echo'<input type="text" name="name" value="ユーザー名：',$row['name'],'">';
+         echo'</div></section>';
          
-         echo '<input type="hidden" name="id" value="',$row['client_id'],'" class="hidden">';
-         echo '<input type="submit" value="更新" class="hidden">';
+         echo '<section><button class="button" type="button" >クリックして開く</button><div class="box">';
+         echo'<p>メールアドレス</p>';
+         echo'<input type="text" name="address"value="',$row['client_address'],'">';
+         echo'</div></section>';
+         
+         echo '<section><button class="button" type="button" >クリックして開く</button><div class="box">';
+         echo'<p>パスワード　　</p>';
+         echo'<input type="text" name="password">';
+         echo'</div></section>';
+         
+         echo '<input type="hidden" name="id" value="',$row['client_id'],'">';
+
+         echo '</div>';
+
+         echo '<div align="center"><input type="submit" value="更新"></div>';
          echo'</form>';
-         echo '</p></div>';
-
-         
-
-         echo '<div align="center"><button><a href="*">投稿</a></button></div>';
-         echo '<div align="center"><button><a href="login_input.php">ログアウト</a></button></div>';
-         echo '<div align="center"><button><a href="account_delete_check.php?id=',$row['client_id'],'">アカウント削除</a></button></div>';
+         echo '<div align="center"><a href="*">投稿</a></div>';
+         echo '<div align="center"><a href="login_input.php">ログアウト</a></div>';
+         echo '<div align="center"><a href="account_delete_check.php?id=',$row['client_id'],'">アカウント削除</a></div>';
          
          }
          
@@ -130,7 +177,7 @@ button:hover {
         }
     }
           
-    echo '<tr><td><div align="center"><button><a href="Top_kensakukekka.php">戻る</a></button></div></td></tr>';
+    echo '<tr><td><div align="center"><a href="Top_kensakukekka.php">戻る</a></div></td></tr>';
     echo '</table>';
     ?> 
             <?php require 'footer.php'; ?> 
