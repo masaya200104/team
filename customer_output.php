@@ -24,7 +24,7 @@
 
      if(empty($sql2->fetchAll())){
      if(empty($sql->fetchAll())){
-            $pass=password_hash($_REQUEST['password'],PASSWORD_DEFAULT);
+            $pass=password_hash($_REQUEST['password'],PASSWORD_DEFAULT);//ハッシュ化
             $sql=$pdo->prepare('insert into client values(null,?,?,?,1)');
             $sql->execute([
                 $_REQUEST['address'],$pass,$_REQUEST['name']   
