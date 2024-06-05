@@ -11,5 +11,6 @@
 <tr><td><div align="center"><button><a href="customer_input.php">新規登録</a></button></dev></td></tr>
 <tr><td><div align="center"><button><a href="Top.php?gest=gest">ゲストログイン</a></button></div></td></tr>
 <tr><td><div align="center"><button><a href="*">お問い合わせ</a></button></div></td></tr>
+<tr><td><div align="center"><button><a href="*">管理者ログイン画面</a></button></div></td></tr>
 </table>
 <?php require 'footer.php'; ?>    
